@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="""UTF-8">
+    <meta name="viewport" content="""width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <title>程美淇生日快乐</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+        .page {
+            width: 100%;
+            height: 100vh;
+            display: none;
+            text-align: center;
+            color: white;
+            transition: all 0.5s ease;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background-image: url('images/happy-birthday.jpg'); /* 确保路径正确 */
+            background-size: cover;
+            background-position: center;
+        }
+        .active { 
+            display: block;
+            animation: fadeIn 1s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .page:not(.page1) {
+            padding-top: 50px;
+        }
+
+        .page1 {
+            position: relative;
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+            background: none;
+        }
+
+        /* 添加背景图片容器 */
+        .bg-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .bg-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(2.5);
+            position: absolute;
+            top: 0;
+            left: 0;
+            -webkit-transform: translateZ(0);
+            -moz-transform: translateZ(0);
+            -ms-transform: translateZ(0);
+            -o-transform: translateZ(0);
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            perspective: 1000;
+            -webkit-backface-visibility: hidden;
+            -webkit-perspective: 1000;
+        }
+
+        .page2 { background: linear-gradient(45deg, #ff9ff3, #feca57); }
+        .page3 { background: linear-gradient(45deg, #48dbfb, #1dd1a1); }
+        .page4 { background: linear-gradient(45deg, #ff9f43, #ee5253); }
+        .page5 { background: linear-gradient(45deg, #00d2d3, #54a0ff); }
+        .page6 { background: linear-gradient(45deg, #5f27cd, #c8d6e5); }
+        .page7 { background: linear-gradient(45deg, #576574, #222f3e); }
+        .page8 { background: linear-gradient(45deg, #ff9ff3, #feca57); }
+        .page9 { background: linear-gradient(45deg, #ff6b6b, #feca57); }
+
+        .nav {
+            position: fixed;
+            bottom: 5vh;
+            width: 100%;
+            text-align: center;
+            z-index: 100;
+        }
+        
+        .nav button {
+            background: rgba(255,255,255,0.3);
+            border: none;
+            color: white;
+            padding: 12px 20px;
+            margin: 0 15px;
+            font-size: 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .nav button:hover {
+            background: rgba(255,255,255,0.5);
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        p {
+            font-size: 1.5em;
+            line-height: 1.6;
+            margin: 20px 0;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .cake {
+            width: 100px;
+            height: 100px;
+            background: #ff9f43;
+            border-radius: 50%;
+            position: relative;
+            margin: 50px auto;
+            animation: float 2s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .candle {
+            width: 10px;
+            height: 30px;
+            background: white;
+            position: absolute;
+            top: -30px;
+            left: 45px;
+        }
+
+        .flame {
+            width: 15px;
+            height: 15px;
+            background: #ffd32a;
+            border-radius: 50%;
+            position: absolute;
+            top: -45px;
+            left: 42.5px;
+            animation: flicker 0.5s infinite alternate;
+        }
+
+        @keyframes flicker {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.2); }
+        }
+
+        /* 修改登录层背景 */
+        .login-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #ffcad4, #ffd1dc);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        /* 更新登录框样式 */
+        .login-box {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(255, 182, 193, 0.3);
+            border: 2px solid rgba(255, 182, 193, 0.3);
+        }
+
+        .login-box h2 {
+            color: #ff6b88;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .login-box p {
+            color: #ff8fa3;
+            margin-bottom: 15px;
+        }
+
+        .login-box input {
+            padding: 12px 20px;
+            font-size: 16px;
+            border: 2px solid #ffd1dc;
+            border-radius: 12px;
+            margin: 15px 0;
+            width: 220px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .login-box input:focus {
+            border-color: #ff8fa3;
+            box-shadow: 0 0 10px rgba(255, 182, 193, 0.3);
+        }
+
+        .login-box button {
+            background: #ff8fa3;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 16px;
+            border-radius: 12px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .login-box button:hover {
+            background: #ff6b88;
+            transform: translateY(-2px);
+        }
+
+        /* 更新樱花样式 */
+        .sakura {
+            position: absolute;
+            background: #ffd1dc;
+            width: 20px;
+            height: 20px;
+            top: -20px;
+            border-radius: 12px 1px;
+            opacity: 0.7;
+            animation: fall linear infinite;
+            transform-origin: center;
+        }
+
+        .sakura::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: inherit;
+            border-radius: 1px 12px;
+            transform: rotate(45deg);
+        }
+
+        @keyframes fall {
+            0% {
+                top: -40px;
+                transform: rotate(0deg) scale(0.6);
+                opacity: 0;
+            }
+            25% {
+                transform: rotate(90deg) scale(0.8);
+                opacity: 0.8;
+            }
+            50% {
+                transform: rotate(180deg) scale(1);
+                opacity: 0.9;
+            }
+            75% {
+                transform: rotate(270deg) scale(0.8);
+                opacity: 0.8;
+            }
+            100% {
+                top: 120vh;
+                transform: rotate(360deg) scale(0.6);
+                opacity: 0;
+            }
+        }
+
+        /* 添加蛋糕悬浮物样式 */
+        .floating-cake {
+            position: absolute;
+            width: 30px;
+            height: 25px;
+            top: -30px;
+            opacity: 0.7;
+            animation: cakeFall linear infinite;
+            transform-origin: center;
+        }
+
+        .floating-cake::before {
+            content: '🎂';
+            font-size: 20px;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        @keyframes cakeFall {
+            0% {
+                top: -40px;
+                transform: rotate(0deg) scale(0.6);
+                opacity: 0;
+            }
+            25% {
+                transform: rotate(90deg) scale(0.8);
+                opacity: 0.8;
+            }
+            50% {
+                transform: rotate(180deg) scale(1);
+                opacity: 0.9;
+            }
+            75% {
+                transform: rotate(270deg) scale(0.8);
+                opacity: 0.8;
+            }
+            100% {
+                top: 120vh;
+                transform: rotate(360deg) scale(0.6);
+                opacity: 0;
+            }
+        }
+
+        /* 修改第一页蛋糕样式 */
+        .main-cake {
+            width: 150px;
+            height: 150px;
+            position: relative;
+            margin: 0 auto;
+        }
+
+        .cake-base {
+            width: 150px;
+            height: 80px;
+        }
+
+        .cake-middle {
+            width: 130px;
+            height: 60px;
+            top: -60px;
+            left: 10px;
+        }
+
+        .cake-top {
+            width: 110px;
+            height: 40px;
+            top: -100px;
+            left: 20px;
+        }
+
+        .candle {
+            top: -130px;
+            left: 70px;
+        }
+
+        .flame {
+            top: -145px;
+            left: 67.5px;
+        }
+
+        /* 福语容器 */
+        .wishes-container {
+            position: absolute;
+            top: 10vh;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            padding: 20px;
+            z-index: 2;
+            width: 90%;
+        }
+
+        .birthday-text {
+            font-size: 20px;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin-bottom: 10px;
+        }
+
+        .age-text {
+            font-size: 18px;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin-top: 10px;
+        }
+
+        .birthday-text, .age-text {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        /* 蛋糕容器 */
+        #cakeContainer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* 移除背景图片容器 */
+        .background-image {
+            display: none;
+        }
+
+        /* 调整移动端文字大小 */
+        @media screen and (max-width: 768px) {
+            .birthday-text {
+                font-size: 24px;
+            }
+            .age-text {
+                font-size: 20px;
+            }
+            h1 {
+                font-size: 28px;
+            }
+            p {
+                font-size: 18px;
+            }
+            .page {
+                background-image: url('images/happy-birthday-mobile.jpg'); /* 为移动设备设置不同的图片 */
+            }
+            .page1 {
+                background-image: url('images/happy-birthday-mobile.jpg'); /* 为移动设备设置不同的图片 */
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 添加登录层 -->
+    <div class="login-overlay" id="loginOverlay">
+        <!-- 添加樱花容器 -->
+        <div id="sakuraContainer"></div>
+        
+        <div class="login-box">
+            <p>问题：我们认识多少天？</p>
+            <input type="password" id="passwordInput" placeholder="请输入答案">
+            <div class="error" id="errorMessage" style="color: #ff6b88; margin-top: 10px; display: none;">这都能记错，真是大笨蛋！</div>
+            <button onclick="checkPassword()">确认</button>
+        </div>
+    </div>
+
+    <div class="page page1 active">
+        <img src="images/happy-birthday.jpg" 
+             style="
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                filter: brightness(2.5);
+                z-index: 1;
+             "
+             alt="birthday background"
+        >
+        <div class="wishes-container">
+            <h1 class="birthday-text">祝程美淇生日快乐</h1>
+            <p class="age-text">年年18！</p>
+        </div>
+        <div id="cakeContainer"></div>
+    </div>
+
+    <div class="page page2">
+        <h1>亲爱的美淇：</h1>
+        <p>生日快乐！</p>
+    </div>
+
+    <div class="page page3">
+        <h1>愿你：</h1>
+        <p>永远保持微笑</p>
+    </div>
+
+    <div class="page page4">
+        <h1>愿你：</h1>
+        <p>前程似锦</p>
+    </div>
+
+    <div class="page page5">
+        <h1>愿你：</h1>
+        <p>梦想成真</p>
+    </div>
+
+    <div class="page page6">
+        <h1>愿你：</h1>
+        <p>快乐常在</p>
+    </div>
+
+    <div class="page page7">
+        <h1>愿你：</h1>
+        <p>平安喜乐</p>
+    </div>
+
+    <div class="page page8">
+        <h1>愿你：</h1>
+        <p>幸福美满</p>
+    </div>
+
+    <div class="page page9">
+        <h1>生日快乐！</h1>
+        <p>愿所有美好与你相伴！</p>
+    </div>
+
+    <div class="nav">
+        <button onclick="prevPage()">←</button>
+        <button onclick="nextPage()">→</button>
+    </div>
+
+    <script>
+        // 添加密码验证功能
+        function checkPassword() {
+            const password = document.getElementById('passwordInput').value;
+            const errorMessage = document.getElementById('errorMessage');
+            const loginOverlay = document.getElementById('loginOverlay');
+
+            if (password === '999') {
+                loginOverlay.style.display = 'none';
+                // 密码正确时播放背景音乐（可选）
+                // playBackgroundMusic();
+            } else {
+                errorMessage.style.display = 'block';
+                document.getElementById('passwordInput').value = '';
+            }
+        }
+
+        // 添加回车键支持
+        document.getElementById('passwordInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+
+        let currentPage = 0;
+        const totalPages = 10;
+
+        function changePage(pageIndex) {
+            if (pageIndex >= 0 && pageIndex < totalPages) {
+                document.querySelectorAll('.page').forEach(page => {
+                    page.classList.remove('active');
+                });
+                document.querySelectorAll('.page')[pageIndex].classList.add('active');
+                currentPage = pageIndex;
+            }
+        }
+
+        function nextPage() {
+            changePage(currentPage + 1);
+        }
+
+        function prevPage() {
+            changePage(currentPage - 1);
+        }
+
+        // 添加触滑动支持
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        document.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            const diff = touchStartX - touchEndX;
+
+            if (Math.abs(diff) > swipeThreshold) {
+                if (diff > 0) {
+                    nextPage();
+                } else {
+                    prevPage();
+                }
+            }
+        }
+
+        // 添加樱花生成函数
+        function createSakura() {
+            const sakuraContainer = document.getElementById('sakuraContainer');
+            const sakura = document.createElement('div');
+            
+            // 随机大小
+            const size = Math.random() * 15 + 10; // 10-25px
+            // 随机起始位置
+            const startPosition = Math.random() * window.innerWidth;
+            // 随机下落间
+            const duration = Math.random() * 5 + 5; // 5-10秒
+            // 随机调
+            const hue = Math.random() * 10 + 350; // 350-360 色相值（粉色范围）
+            const lightness = Math.random() * 15 + 80; // 80-95% 亮度
+
+            sakura.className = 'sakura';
+            sakura.style.left = startPosition + 'px';
+            sakura.style.width = size + 'px';
+            sakura.style.height = size + 'px';
+            sakura.style.animationDuration = duration + 's';
+            sakura.style.background = `hsl(${hue}, 100%, ${lightness}%)`;
+
+            sakuraContainer.appendChild(sakura);
+
+            // 动画结束后移除樱花
+            setTimeout(() => {
+                sakura.remove();
+            }, duration * 1000);
+        }
+
+        // 更频繁地生成樱花
+        setInterval(createSakura, 200);
+
+        // 初始生成多樱花
+        for(let i = 0; i < 15; i++) {
+            setTimeout(createSakura, i * 200);
+        }
+
+        // 添加蛋糕生成函数
+        function createFloatingCake() {
+            const cakeContainer = document.getElementById('cakeContainer');
+            const cake = document.createElement('div');
+            
+            // 随机大小
+            const size = Math.random() * 20 + 15; // 15-35px
+            // 随机起始位置
+            const startPosition = Math.random() * window.innerWidth;
+            //    下落时
+            const duration = Math.random() * 5 + 5; // 5-10秒
+
+            cake.className = 'floating-cake';
+            cake.style.left = startPosition + 'px';
+            cake.style.fontSize = size + 'px';
+            cake.style.animationDuration = duration + 's';
+
+            cakeContainer.appendChild(cake);
+
+            // 动画结束后移除蛋糕
+            setTimeout(() => {
+                cake.remove();
+            }, duration * 1000);
+        }
+
+        // 生成蛋糕
+        setInterval(createFloatingCake, 500);
+
+        // 初始生成一些蛋糕
+        for(let i = 0; i < 10; i++) {
+            setTimeout(createFloatingCake, i * 300);
+        }
+    </script>
+</body>
+</html>
